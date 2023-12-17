@@ -1,0 +1,17 @@
+// QUESTION -> Given a Binary Tree, convert it into its mirror.
+
+class Solution {
+  public:
+    // Function to convert a binary tree into its mirror tree.
+   void mirror(Node* node) {
+        if (node == NULL || (node->left == NULL && node->right == NULL))
+            return;
+
+        // Swap left and right subtrees
+        swap(node->left, node->right);
+
+        // Recursively mirror the left and right subtrees
+        mirror(node->left);
+        mirror(node->right);
+    }
+};
