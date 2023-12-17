@@ -1,0 +1,14 @@
+class Solution{
+    private:
+    int helper(struct Node* node,int ht){
+        if(node==NULL) return 0;
+        int left=helper(node->left,ht);
+        int right=helper(node->right,ht);
+        return 1+max(left,right);
+    }
+    public:
+    //Function to find the height of a binary tree.
+    int height(struct Node* node){
+        return helper(node,0);
+    }
+};
