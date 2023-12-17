@@ -1,3 +1,129 @@
+/* Method1 Brute Force Approach:
+Intuition:
+The idea is to visit every node in the tree and find the height of left and right subtree for that node and finally return the node that has largest sum of left and right height.
+*/
+
+
+
+class Solution {
+  public:
+    
+    int max(int a, int b) { 
+        if(a > b)
+            return a;
+        else
+            return b;
+    }
+
+    // Function to get diameter of a binary tree
+    int diameter(Node* tree)
+    {
+        if (tree == NULL)
+            return 0;
+
+        int lheight = height(tree->left);
+        int rheight = height(tree->right);
+    
+        int ldiameter = diameter(tree->left);
+        int rdiameter = diameter(tree->right);
+ 
+        return max(lheight + rheight + 1,
+           max(ldiameter, rdiameter));
+    }
+ 
+    int height(Node* node)
+    {
+        if (node == NULL)
+            return 0;
+
+        return 1 + max(height(node->left), height(node->right));
+    }
+};
+
+
+Complexity:
+Time Complexity: O(N2), O(N) time will be needed to traverse the tree and for each node of the tree another O(N) will be needed to find the height of its left and right subtree.
+Space Complexity: O(N), As the size of the recursive call stack would be N.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Brute Optimized Approach:
+Intuition:
+Better idea is to make a single recursive call and compute diameter and height simultaneously.
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class DiaPair {
+public:
+    int height;
+    int diameter;
+
+    DiaPair() : height(0), diameter(0) {}
+
+    DiaPair(int h, int d) : height(h), diameter(d) {}
+};
+class Solution {
+public:
+    int diameter(TreeNode* root) {
+        if (root == nullptr)
+            return 0;
+
+        DiaPair ans = findDiameter(root);
+
+        return ans.diameter + 1;
+    }
+
+private:
+    DiaPair findDiameter(TreeNode* root) {
+        if (root == nullptr) {
+            return DiaPair(-1, 0);
+        }
+
+        DiaPair lhs = findDiameter(root->left);
+        DiaPair rhs = findDiameter(root->right);
+
+        DiaPair myPair;
+        myPair.diameter = max(lhs.height + rhs.height + 2, max(lhs.diameter, rhs.diameter));
+        myPair.height = max(lhs.height, rhs.height) + 1;
+
+        return myPair;
+    }
+};
+
+
+
+
+Complexity:
+Time Complexity: O(n), where n is the number of nodes in the binary tree as the findDiameter function is called on each node of the binary tree exactly once.
+Space Complexity: The space complexity is determined by the recursion stack. In the worst case, the maximum depth of the recursion is the height of the binary tree, resulting in a space complexity of O(h), where h is the height of the binary tree. This can be as bad as O(n) in the worst case for a skewed binary tree but typically ranges from O(log n) for a balanced binary tree to O(n) for an unbalanced binary tree
+
+
+
+
+
+
+
+
+
+Expected Approach:
+Intuition:
+The idea is to optimized the above approach by calculating the height in the same recursion rather than calling a height() separately.
 
 class Solution {
     public:
@@ -11,9 +137,7 @@ int height(Node* root, int& ans)
   
     int right_height = height(root->right, ans); 
   
-    // update the answer, because diameter of a 
-    // tree is nothing but maximum value of 
-    // (left_height + right_height + 1) for each node 
+    // update the answer, because diameter of a tree is nothing but maximum value of  (left_height + right_height + 1) for each node 
     ans = max(ans, 1 + left_height + right_height); 
   
     return 1 + max(left_height, right_height); 
