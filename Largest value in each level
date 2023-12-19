@@ -1,0 +1,35 @@
+
+class Solution
+{
+    public:
+    void helper(vector<int>& res, Node* root, int d)
+    {
+        if (!root)
+            return;
+    
+        // Expand list size
+        if (d == res.size())
+            res.push_back(root->data);
+    
+        else
+    
+            // to ensure largest value
+            // on level is being stored
+            res[d] = max(res[d], root->data);
+    
+        // Recursively traverse left and
+        // right subtrees in order to find
+        // out the largest value on each level
+        helper(res, root->left, d + 1);
+        helper(res, root->right, d + 1);
+    }
+    
+    // function to find largest values
+    public:
+    vector<int> largestValues(Node* root)
+    {
+        vector<int> res;
+        helper(res, root, 0);
+        return res;
+    }
+};
