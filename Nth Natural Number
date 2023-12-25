@@ -1,0 +1,80 @@
+Given a positive integer N. You have to find Nth natural number after removing all the numbers containing digit 9.
+
+Solution
+
+Naive Approach: The simplest approach to solve the above problem is to iterate up to N and keep excluding all numbers less than N containing the digit 9. Finally, print the Nth natural number obtained.
+
+// isDigitNine function return true if number contain digit
+// 9 else will return false
+bool isDigitNine(int i)
+{
+    while (i > 0) {
+        int rem = i % 10;
+        if (rem == 9) {
+            return true;
+        }
+        i = i / 10;
+    }
+    return false;
+}
+long long findNth(long long N)
+{
+    long long count = 0;
+    for (int i = 1; i > 0; i++) {
+        // call function digitnine() with i
+        if (isDigitNine(i) == false) {
+            count++;
+            if (count == N) {
+                count = i; // once  count is equal to N then
+                break; // assign last i to count and break the loop
+            }
+        }
+    }
+    return count;
+}
+
+Time Complexity: O(N)
+Auxiliary Space: O(1)
+
+
+
+
+
+Efficient Approach: The above approach can be optimized based on the following observations: 
+
+-It is known that, digits of base 2 numbers varies from 0 to 1. Similarly, digits of base 10 numbers varies from 0 to 9.
+-Therefore, the digits of base 9 numbers will vary from 0 to 8.
+-It can be observed that Nth number in base 9 is equal to Nth number after skipping numbers containing digit 9.
+-So the task is reduced to find the base 9 equivalent of the number N.
+
+// Function to find Nth number in base 9
+long long findNthNumber(long long N)
+{
+    // Stores the Nth number
+    long long result = 0;
+ 
+    long long p = 1;
+ 
+    // Iterate while N is
+    // greater than 0
+    while (N > 0) {
+ 
+        // Update result
+        result += (p * (N % 9));
+ 
+        // Divide N by 9
+        N = N / 9;
+ 
+        // Multiply p by 10
+        p = p * 10;
+    }
+    // Return result
+    return result;
+}
+
+
+Time Complexity: O(log9 N)
+Auxiliary Space: O(1)
+
+
+
