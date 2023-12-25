@@ -1,0 +1,108 @@
+Find the smallest positive integer value that cannot be represented as sum of any subset of a given array
+Given an array of positive numbers, find the smallest positive integer value that cannot be represented as the sum of elements of any subset of a given set. 
+The expected time complexity is O(nlogn).
+
+
+
+A Simple Solution is to start from value 1 and check all values one by one if they can sum to values in the given array. This solution is very inefficient as it reduces to the subset sum problem which is a well-known NP-Complete Problem. Using a simple loop, we can solve this problem in O(N log N) time.
+Let the input array be arr[0..n-1]. We first sort the array in non-decreasing order. Let the smallest element that cannot be represented by elements at indexes from 0 to (i-1) be ‘res’.  We initialize ‘res’ as 1 (smallest possible answer) and traverse the given array from i=0.  There are the following two possibilities when we consider element at index i:
+
+1.We decide that ‘res’ is the final result: If arr[i] is greater than ‘res’, then we found the gap which is ‘res’ because the elements after arr[i] are also going to be greater than ‘res’.
+2.The value of ‘res’ is incremented after considering arr[i]: If arr[i] is not greater than ‘res’, the value of ‘res’ is incremented by arr[i] so ‘res’ = ‘res’+arr[i] (why? If elements from 0 to (i-1) can 
+represent 1 to ‘res-1’, then elements from 0 to i can represent from 1 to ‘res + arr[i] – 1’ by adding arr[i] to all subsets that represent 1 to ‘res-1’ which we have already determined to be represented)
+
+
+
+// Returns the smallest number that cannot be represented as sum
+// of subset of elements from set represented by sorted array arr[0..n-1]
+long long smallestpositive(vector<long long> arr, int n) {
+   long long int res = 1; // Initialize result
+  
+   sort(arr.begin(), arr.end());
+   // Traverse the array and increment 'res' if arr[i] is
+   // smaller than or equal to 'res'.
+   for (int i = 0; i < n && arr[i] <= res; i++)
+       res = res + arr[i];
+  
+   return res;
+  }
+
+The Time Complexity of the above program is O(nlogn). 
+
+The Space Complexity is O(1) in best case for heap sort.  
+
+
+
+
+Approach#2: Using dynamic programming
+In this approach, we can use dynamic programming to solve the problem. We can create a boolean array of size (sum+1), where sum is the sum of all the elements in the array. We can then use dynamic programming to mark all the possible sums that can be obtained by selecting some of the elements in the array. Finally, we can iterate through the boolean array to find the smallest positive integer that cannot be represented as a sum of any subset of the given array.
+
+Algorithm
+1. Calculate the sum of all elements in the given array.
+2. Create a boolean array of size (sum+1), initialized to False.
+3. Mark arr[0] as True, as a subset with sum equal to arr[0] can be formed.
+4. For each element arr[i], iterate through the boolean array from right to left, and mark arr[i]+j as True if arr[i]+j is less than or equal to sum.
+5. Finally, iterate through the boolean array from left to right, and return the index of the first False element plus 1.
+
+int smallest_positive_integer(vector<int>& arr) {
+    int n = arr.size();
+    int s = 0;
+    for (int i = 0; i < n; i++) {
+        s += arr[i]; // compute sum of all elements
+    }
+    vector<bool> dp(s+1, false); // initialize dp array with false values
+    dp[0] = true; // a subset with sum 0 can always be formed
+    for (int i = 0; i < n; i++) {
+        for (int j = s; j >= arr[i]; j--) {
+            if (dp[j-arr[i]]) { // if it's possible to form a subset with sum j-arr[i]
+                dp[j] = true; // then it's also possible to form a subset with sum j
+            }
+        }
+    }
+    for (int i = 1; i <= s; i++) {
+        if (!dp[i]) { // find the smallest positive integer that cannot be formed
+            return i;
+        }
+    }
+    return s+1; // if all integers can be formed, then the answer is s+1
+}
+
+
+
+
+
+Method 3 
+We initialize the result as 1 (smallest possible
+outcome) and traverse the given array. Let the
+smallest element that cannot be represented by
+elements at indexes from o to (i-1) be 'res',
+there are following two possibilities when we
+consider element at index i:
+1) we decide that 'res' is the final result: If
+arr[i] is greater than 'res', then we found the
+gap which is 'res' because the elements after
+arr[i] are also going to be greater than 'res'.
+2) The value of 'res' is incremented after
+considering arr[i]: The value of 'res' is
+incremented by arr[i] (why? If elements from 0
+to (i-1) can represent 1 to 'res-1', then elements
+from O to i can represent from 1 to 'res + arr[i]
+- 1' be adding 'arr[i]' to all subsets that
+represent 1 to 'res')
+
+
+long long smallestpositive(vector<long long> array, int n)
+    { 
+        // code here
+        sort(array.begin(),array.end());
+        long long ans=1;
+        for(int i=0;i<n;i++){
+            if(array[i]>ans){
+                return ans;
+            }
+            ans+=array[i];
+        }
+        return ans;
+    }
+
+
