@@ -41,3 +41,41 @@ public:
 
 
 
+
+
+
+
+
+
+
+
+
+
+//METHOD 2
+
+class Solution {
+private:
+void print(int ind,int target,vector<int> &candidates,vector<vector<int>> &ans,vector<int> &v){
+   if(ind==candidates.size()){
+       if(target==0) ans.push_back(v);
+       return;
+   }
+//take
+if(candidates[ind]<=target){
+    v.push_back(candidates[ind]);
+    print(ind,target-candidates[ind],candidates,ans,v);
+    v.pop_back();
+}
+print(ind+1,target,candidates,ans,v);
+}
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        print(0,target,candidates,ans,v);
+        return ans;
+    }
+};
+
+
+
