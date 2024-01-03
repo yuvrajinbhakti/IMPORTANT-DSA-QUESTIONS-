@@ -1,0 +1,155 @@
+/*
+We are given an “N*M” matrix of integers. We need to find a path from the top-left corner to the bottom-right corner of the matrix, such that there is a minimum cost past that we select.
+
+At every cell, we can move in only two directions: right and bottom. The cost of a path is given as the sum of values of cells of the given matrix.
+*/
+
+// when there is non uniformity in values then don't apply greedy there.
+
+
+
+//recurison code
+f(i,j){
+    if(i==0 && j==0) return a[0][0];        //base-case
+    if(i<0 || j<0) return INT_MAX;        //if goes out of bound then it should not be taken into consideration so we return very big value as we want to find min value so we will not consider this value 
+// we go from bottom to 0,0 because we are trying to solve problem in reverse way as problem told to go down and right
+up=a[i][j]+f(i-1,j);
+left=a[i][j]+f(i,j-1);
+return min(up,left);
+}
+
+
+
+
+// when overlaaping sub problems so we can apply dp
+
+
+
+//memoization
+dp[n-1][m-1]={-1}; //max value of i and j is n-1 and m-1 so intialise dp of n-1 and m-1 size by -1
+f(i,j){
+    if(i==0 && j==0) return a[0][0];        //base-case
+    if(i<0 || j<0) return INT_MAX;       
+if(dp[i][j]!=-1) return dp[i][j];
+up=a[i][j]+f(i-1,j);
+left=a[i][j]+f(i,j-1);
+return dp[i][j]= min(up,left);
+}
+
+
+// t.c. O(N*M)
+//s.c. O(N*M )+ O((n-1) + (m-1)) // recursion stack space of path length i.e. (n-1) + (m-1)
+
+
+
+
+//tabulation
+// i will be from 0 to n-1 and j will be from 0 to m-1
+dp[n][m];
+for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++){
+        if(i==0 &&  j==0) dp[i][j]=a[0][0];
+        else {
+           if(i>0) up=a[i][j]+dp[i-1][j];
+           if(j>0) left=a[i][j]+dp[i][j-1];
+            dp[i][j]=min(up,left);
+}
+    }
+}
+cout<<dp[n-1][m-1];
+
+
+
+
+// Space Optimisation
+// we only need dp[i-1][j] i.e. previous row && dp[i][j-1] i.e. current row so we don't need complete array
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <bits/stdc++.h> 
+int rows, cols;
+
+int solve(int i, int j, vector<vector<int>>& grid) {
+    if(i == rows - 1 and j == cols - 1) return grid[i][j];
+    if(i >= rows || j >= cols) return INT_MAX;
+    int p1 = solve(i + 1, j, grid);
+    if(p1 != INT_MAX) p1 += grid[i][j];
+    int p2 = solve(i, j + 1, grid);
+    if(p2 != INT_MAX) p2 += grid[i][j];
+
+    return min(p1, p2);
+}
+
+int solveMem(int i, int j, vector<vector<int>>& grid, vector<vector<int>>& dp) {
+    if(i == rows - 1 and j == cols - 1) return grid[i][j];
+    if(i >= rows || j >= cols) return INT_MAX;
+    if(dp[i][j] != -1) return dp[i][j];
+    int p1 = solveMem(i + 1, j, grid, dp);
+    if(p1 != INT_MAX) p1 += grid[i][j];
+    int p2 = solveMem(i, j + 1, grid, dp);
+    if(p2 != INT_MAX) p2 += grid[i][j];
+
+    return dp[i][j] = min(p1, p2);
+}
+
+int solveTab(vector<vector<int>>& grid) {
+    vector<vector<int>> dp(rows, vector<int>(cols, INT_MAX));
+    dp[0][0] = grid[0][0];
+
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < cols; j++) {
+            if(i == 0 and j == 0) {
+                continue;
+            } else {
+                int up = INT_MAX, left = INT_MAX;
+                if(i > 0) up = dp[i - 1][j];
+                if(up != INT_MAX) up += grid[i][j];
+                if(j > 0) left = dp[i][j - 1];
+                if(left != INT_MAX) left += grid[i][j];
+                dp[i][j] = min(dp[i][j], min(up, left));
+            }
+        }
+    }
+    return dp[rows - 1][cols - 1];
+}
+
+int solveTabS(vector<vector<int>>& grid) {
+    vector<int> prev(cols, INT_MAX);
+
+    for(int i = 0; i < rows; i++) {
+        vector<int> cur(cols, INT_MAX);
+        for(int j = 0; j < cols; j++) {
+            if(i == 0 and j == 0) {
+                cur[j] = grid[i][j];
+                continue;
+            } else {
+                int up = INT_MAX, left = INT_MAX;
+                if(i > 0) up = prev[j];
+                if(up != INT_MAX) up += grid[i][j];
+                if(j > 0) left = cur[j - 1];
+                if(left != INT_MAX) left += grid[i][j];
+                cur[j] = min(cur[j], min(up, left));
+            }
+        }
+        prev = cur;
+    }
+    return prev[cols - 1];
+}
+
+int minSumPath(vector<vector<int>> &grid) {
+    // Write your code here.
+    rows = grid.size();
+    cols = grid[0].size();
+    vector<vector<int>> dp(rows, vector<int>(cols, -1));
+    return solveTabS(grid);
+}
