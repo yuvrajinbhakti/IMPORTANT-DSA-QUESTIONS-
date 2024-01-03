@@ -17,3 +17,7 @@ getPath(root,arr,node);
 return arr;
     }
 };
+
+
+
+//T.C. - O(N), S.C. ->O(Height of Tree)
