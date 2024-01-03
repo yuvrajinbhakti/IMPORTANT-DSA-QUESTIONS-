@@ -1,0 +1,19 @@
+
+class Solution{
+    private:
+    bool getPath(TreeNode* root,vector<int>&arr,int node){
+if(!root) return false;
+arr.push_back(root->val);
+if(root->val==node) return true;
+if(getPath(root->left,arr,node) || getPath(root->right,arr,node))return true;
+arr.pop_back();  
+return false;
+    }
+    public:
+    vector<int> Solution::solve(TreeNode * root,int node){
+vector<int> arr;
+if(root==NULL)return arr;
+getPath(root,arr,node);
+return arr;
+    }
+};
