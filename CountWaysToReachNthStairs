@@ -1,0 +1,103 @@
+/*
+ Count Ways To Reach The N-th Stairs
+Problem statement
+You have been given a number of stairs. Initially, you are at the 0th stair, and you need to reach the Nth stair. Each time you can either climb one step or two steps. You are supposed to return the number of distinct ways in which you can climb from the 0th step to Nth step.
+
+e.g. for n=3
+We can climb one step at a time i.e. {(0, 1) ,(1, 2),(2,3)} or we can climb the first two-step and then one step i.e. {(0,2),(1, 3)} or we can climb first one step and then two step i.e. {(0,1), (1,3)}.
+*/
+
+// we apply recursion , if told 1. count total number of ways because then concept of try all possible ways comes in 2. there are many ways to do something we need to tell which will give max or min output
+
+// when told to try all possible ways and tell count or best way then apply recursion
+
+
+
+
+/*
+To write any recurence relation / recrusion code then we can memoise it then write itterative solution
+1. Try to represent problem in terms of indexes
+2.Do all possible things on that index according to the problem statement
+3. Think what will recursion give,if questions says 1. sum of all things then count all ways 2.if told to take max/min of all things the find max/min
+
+*/
+
+// to count all ways -> return 1 in base case and then make left and right function calls then add them
+
+// f(index){
+//     if(index==0) return 1;      //base case
+//     if(index==1)return 1;            // edge case , e.g. if index=1 then index-2 will become -1
+//     left=f(index-1);
+//     right=f(index-2);           
+//     return left+right;
+// }
+
+
+// this is like fibonacci number question
+
+
+
+
+
+
+
+/*
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+  int n;
+  cin>>n;
+  vector<int> dp(n+1,-1);
+  dp[0]= 1;
+  dp[1]= 1;
+  for(int i=2; i<=n; i++){
+      dp[i] = dp[i-1]+ dp[i-2];
+  }
+  cout<<dp[n];
+  return 0;
+}
+//T.C. - O(N), S.C. - O(N)
+*/
+
+
+
+
+/*
+Space Optimization
+
+If we closely look the relation,
+
+dp[i] =  dp[i-1] + dp[i-2]
+
+we see that for any i, we do need only the last two values in the array. So is there a need to maintain a whole array for it? 
+
+The answer is ‘No’. Let us call dp[i-1] as prev and dp[i-2] as prev2. Now understand the following illustration.
+
+
+Each iteration’s cur_i and prev becomes the next iteration’s prev and prev2 respectively.
+Therefore after calculating cur_i, if we update prev and prev2 according to the next step, we will always get the answer. 
+After the iterative loop has ended we can simply return prev as our answer
+*/
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+int main() {
+
+  int n=3;
+  
+  int prev2 = 1;
+  int prev = 1;
+  
+  for(int i=2; i<=n; i++){
+      int cur_i = prev2+ prev;
+      prev2 = prev;
+      prev= cur_i;
+  }
+  cout<<prev;
+  return 0;
+}
+
+//T.C. - O(N) , S.C. - O(1)
