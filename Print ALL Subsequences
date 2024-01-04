@@ -1,0 +1,44 @@
+//subsequence - may or may not be consecutive but it should be in order
+// for n length array/string -> number of subsequences are 2^n
+
+
+/*
+To check if i th bit is set or not, then put 1 beneath that index and 0 at all other indexes then do 'and' , if output comes 0 then i th bit is not set else i th bit is set
+
+to place 1 beneath i th index -> 1<<i (1 left shift i)
+
+if n&(1<<i)!=0 then it mean i th bit is not set else set
+
+*/
+//indexing goes from right to left in binary representation of any number
+
+/*
+Method to print all subsequences using power set method
+
+we know for n size array/string we have 2^n subsequences
+so write numbers 0 to (2^n)-1, then write bit /binary (i.e. in form of 0 and 1 )represention of every number
+
+
+let's assume 0 mean not pick up, 1 mean pick up that element/char
+
+Comclusion -> 
+Itterate numbers from 0 to (2^n)-1 and 0 mean not pick, 1 mean pick
+
+2^n  can also be written as 1<<n i.e. 1 left shift n
+
+
+for(number = 0 to ((2^n)-1) ){
+    string substring="";
+    for(i=(0 to n-1)){  
+     if(n&(1<<i)){// to check if i th bit is set or not
+        substring+=s[i];    // if i th bit is set i.e. 1 so it mean pick
+     }       
+    }
+cout<<substring;
+}
+
+
+ t.c. - O( (2^N) *  N ), S.C. - O(1)
+
+*/
+
