@@ -9,3 +9,4 @@ public:
         else return root;   //if both not null, so we found our lca
     }
 };
+// t.c. - O(N),  s.c. - O(N)
