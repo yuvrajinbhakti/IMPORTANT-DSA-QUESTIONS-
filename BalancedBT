@@ -1,0 +1,69 @@
+// Balanced BT or height-balanced BT -> For every node, height(left)-height(right)<=1
+
+
+//method 1 - naive solution - for each find left subtree height and right subtree height, if absolute difference between them is more than 1 then return false
+
+bool check(Node){
+    if(node==NULL) return true;
+    leftHt=findHt(node->left);// find left subtree height
+    rightHt=findHt(node->right);//find right subtree height
+if(abs(rightHt-leftHt)>1) return false;
+
+bool left=check(node->left);
+bool right=check(node->right);
+
+if(!left || !right) return false;
+return true;
+}
+
+
+
+//t.c. - O(N^2) because for each node we are calculating height
+
+
+
+//method 2 
+/*
+// code to find height of tree
+int height(node){
+    if(node==NULL) return 0;
+    lh=height(node->left);
+    rh=height(node->right);
+    return 1+max(rh+lh);
+}
+*/
+
+//if tree is balanced BT then we will return ht of BT else we will return -1
+
+// int check(node){
+//     if(node==NULL) return 0;
+//     lh=check(node->left);
+//     rh=check(node->right);
+    
+//     //if not balanced BT
+//     if(lh==-1 || rh==-1) return -1;
+//     if(abs(rh-lh)>1) return -1;
+    
+//     return 1+max(rh+lh);
+// }
+
+class Solution{
+    private:
+    int dfsHeight(TreeNode* root){
+        if(root==NULL) return 0;
+
+        int leftHeight=dfsHeight(root->left);
+        if(leftHeight==-1) return -1;
+        int rightHeight=dfs(root->right);
+        if(rootHeight==-1) return -1;
+
+        if(abs(leftHeight-rightHeight>1)) return -1;
+        return max(leftHeight,rightHeight)+1;
+    }
+    public:
+    bool isBalanced(TreeNode* root){
+        return dfsHeight(root) !=-1;        // if it return -1 then it mean not valid/balanced BT else valid BT
+    }
+}
+
+//t.c. - O(N), s.c. - O(N)
