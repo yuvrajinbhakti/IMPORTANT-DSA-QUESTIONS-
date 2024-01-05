@@ -1,4 +1,4 @@
-
+//method 1 
 void helper(Node *root, set<int> &s,vector<int> &ans,int currLevel){
     if(root==NULL) return ;
 
@@ -27,20 +27,43 @@ vector<int> leftView(Node *root)
 
 
 
+//method 2 //if we do level order traversal then t.c. - O(N), .s.c- O (N)
+// if we do recursive traversal then t.c. - O(N), .s.c- O (Ht Of BT)
 
-OR
+/*recursive way
 
-  void recursion(TreeNode *root, int level, vector<int> &res)
-    {
-        if(root==NULL) return ;
-        if(res.size()==level) res.push_back(root->val);
-        recursion(root->left, level+1, res);
-        recursion(root->right, level+1, res);
+for right view
+f(node,level){  //initially node=root,level=0
+    if(node==NULL) reutrn;
+    if(level==ds.size())ds.add(node);   // it mean we come to this level for first time
+    f(node->right,level+1);
+    f(node->left,level+1);
+}
+
+for left view 
+f(node,level){  //initially node=root,level=0
+    if(node==NULL) reutrn;
+    if(level==ds.size())ds.add(node);   // it mean we come to this level for first time
+    f(node->left,level+1);
+    f(node->right,level+1);
     }
-    
-    vector<int> leftSideView(TreeNode *root) {
-        vector<int> res;
-        recursion(root, 0, res);
-        return res;
-    }
+*/
 
+
+//left view
+class Solution{
+    vector<int> rightView(TreeNode* root){
+        vector<int> ans;
+        helper(root,0,ans);
+        return ans;
+    }
+    public:
+    void helper(TreeNode * root,int level,vector<int> &ans){
+        if(root==NULL) return;
+        if(level==ans.size()){
+            ans.push_back(root->val);
+        }
+        helper(root->left,level+1,ans);
+        helper(root->right,level+1,ans);
+    }
+}
