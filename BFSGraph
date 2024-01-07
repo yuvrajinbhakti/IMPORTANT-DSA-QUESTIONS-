@@ -1,0 +1,29 @@
+vector<int> bfs(int V,vector<int> adj[]){       // in vector<int> we have to store bfs and return // V are number of nodes, adj[] is the adjacency list
+
+ int vis[n]={0};   //for 0 based indexing graph
+  // visited array of size n and intialize all by 0 ,but startng node by 1
+vis[0]=1;
+queue<int> q;
+q.push(0);
+
+vector<int> bfs;
+
+while(!q.empty()){
+    int node=q.front();
+    q.pop();
+    bfs.push(node);
+    for(auto it:adj[node]){// because that adj[node] will be a vector which will store all neighbour nodes of node
+            // if adj nodes are unvisited, then mark them visited and also push them in queue
+            if(!vis[it]){
+                    vis[it]=1;
+                    q.push(it);
+            }
+    }
+   
+}
+ return bfs;
+}
+
+// Time Complexity: O(N) + O(2E), Where N = Nodes, 2E is for total degrees as we traverse all adjacent nodes.(degrees=number of neighbour nodes)    
+
+// Space Complexity: O(3N) ~ O(N), Space for queue data structure, visited array and an adjacency list
