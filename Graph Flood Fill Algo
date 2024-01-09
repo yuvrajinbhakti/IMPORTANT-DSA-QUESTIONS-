@@ -1,0 +1,88 @@
+/*
+An image is represented by a 2-D array of integers, each integer representing the pixel value of the image.
+
+Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, "flood fill" the image.
+
+To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color as the starting pixel), and so on. Replace the color of all of the aforementioned pixels with the newColor.
+
+Example 1:
+
+Input: image = {{1,1,1},{1,1,0},{1,0,1}},
+sr = 1, sc = 1, newColor = 2.
+Output: {{2,2,2},{2,2,0},{2,0,1}}
+Explanation: From the center of the image 
+(with position (sr, sc) = (1, 1)), all 
+pixels connected by a path of the same color
+as the starting pixel are colored with the new 
+color.Note the bottom corner is not colored 2, 
+because it is not 4-directionally connected to 
+the starting pixel.
+*/
+
+//BFS way
+
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+          queue<pair<int,int>> q;
+       q.push({sr,sc});
+       int ROW[4] = {0, 0, 1, -1};
+       int COL[4] = {1, -1, 0, 0};
+       int rowsize=image.size();
+       int colsize=image[0].size();
+       int oldColor=image[sr][sc];
+       image[sr][sc]=newColor;
+       while(!q.empty())
+       {
+           int x=q.front().first;
+           int y=q.front().second;
+           q.pop();
+           for(int i=0;i<4;i++)
+           {
+               int dx=x+ROW[i];
+               int dy=y+COL[i];
+               if(dx<0 || dx>=rowsize || dy<0 || dy>=colsize ||
+               image[dx][dy]!=oldColor || image[dx][dy]==newColor)
+               {
+                   continue;
+               }
+               // cout<<"adding color for "<<dx<<" "<<dy<<endl;
+               image[dx][dy]=newColor;
+               q.push({dx,dy});
+           }
+           
+       }
+       return image;
+    }
+};
+
+
+
+//DFS way
+
+class Solution {
+public:
+    // Function to perform flood fill operation on the image
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        // If the starting color is already same as newColor, return the original image
+        if (image[sr][sc] != newColor)
+            // Call the depth-first search function for flood filling
+            dfs(image, sr, sc, image[sr][sc], newColor);
+        // Return the modified image
+        return image;
+    }
+
+private:
+    // Helper function for depth-first search
+    void dfs(vector<vector<int>>& image, int i, int j, int c0, int c1) {
+        // Base case: if the current pixel is out of bounds or not same as the starting color, return
+        if (i < 0 || j < 0 || i >= image.size() || j >= image[0].size() || image[i][j] != c0) return;
+        // Change the color of the current pixel to the new color
+        image[i][j] = c1;
+        // Recursive calls for the adjacent pixels
+        dfs(image, i, j - 1, c0, c1); // left
+        dfs(image, i, j + 1, c0, c1); // right
+        dfs(image, i - 1, j, c0, c1); // up
+        dfs(image, i + 1, j, c0, c1); // down
+    }
+};
