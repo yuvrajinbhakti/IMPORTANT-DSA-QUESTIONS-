@@ -36,3 +36,33 @@ class Solution {
         return false;
     }
 };
+
+
+
+//using dfs
+
+class Solution {
+    private:
+    bool detect(int start,int parent, vector<int> adj[],vector<int> &vis){
+        vis[start]=1;
+        for(auto it:adj[start]){
+            if(!vis[it]){
+                    if(detect(it,start,adj,vis)==true) return true;
+            }
+            else if(vis[it] && parent!=it) return true;
+        }
+        return false;
+    }
+    
+  public:
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector<int> adj[]) {
+        vector<int> vis(V,0);
+        for(int i=0;i<V;i++){
+            if(!vis[i]){
+            if(detect(i,-1,adj,vis)) return true;
+        }
+        }
+        return false;
+    }
+};
