@@ -1,0 +1,21 @@
+//in question given that majority element always exists
+
+//method 1 take map and store freq of each array element and if freq is more then n/2 then it is our answer
+//method 2 Boyer–Moore majority vote algorithm
+int Solution::
+majorityElement(const vector<int> &A) {
+int cnt=1,ele=A[0];
+for(int i=1;i<A.size();i++){
+    if(A[i]==ele){
+        cnt++;
+    }
+    else if(A[i]!=ele){
+        cnt--;
+        if(cnt==0){
+            cnt=1;
+            ele=A[i];
+        }
+    }
+}
+ return ele;   
+}
