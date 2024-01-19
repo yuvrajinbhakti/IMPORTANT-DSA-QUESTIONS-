@@ -1,0 +1,53 @@
+//method 1 use sort
+
+#include<bits/stdc++.h>
+int Solution::repeatedNumber(const vector<int> &A) {
+  int ans=-1;
+  vector<int> v = A;
+  sort(v.begin(),v.end());
+  int n=A.size();
+ 
+  for(int i=1;i<n;i++){
+      if(v[i]==v[i-1]){ ans=v[i];
+      break;
+      }
+  }
+  return ans;
+  
+}
+
+
+//method 2 use map
+
+int findDuplicate(vector < int > & arr) {
+  int n = arr.size();
+  int freq[n + 1] = {
+    0
+  };
+  for (int i = 0; i < n; i++) {
+    if (freq[arr[i]] == 0) {
+      freq[arr[i]] += 1;
+    } else {
+      return arr[i];
+    }
+  }
+  return 0;
+}
+
+
+
+// method 3 Linked List cycle method
+int findDuplicate(vector < int > & nums) {
+  int slow = nums[0];
+  int fast = nums[0];
+  do {
+    slow = nums[slow];
+    fast = nums[nums[fast]];
+  } while (slow != fast);
+  fast = nums[0];
+  while (slow != fast) {
+    slow = nums[slow];
+    fast = nums[fast];
+  }
+  return slow;
+}
