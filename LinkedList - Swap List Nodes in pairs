@@ -1,0 +1,43 @@
+/*
+Question
+Given a linked list A, swap every two adjacent nodes and return its head.
+
+NOTE: Your algorithm should use only constant space. You may not modify the values in the list; only nodes themselves can be changed.
+Example Input
+ Input 1: 
+
+ A = 1 -> 2 -> 3 -> 4
+ Input 2: 
+
+ A = 7 -> 2 -> 1
+
+
+Example Output
+ Output 1: 
+
+ 2 -> 1 -> 4 -> 3
+ Output 2: 
+
+ 2 -> 7 -> 1
+*/
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ListNode *helper(ListNode* head){
+    if(head==NULL || head->next==NULL) return head;
+    swap(head->val,head->next->val);
+    return helper(head->next->next);
+}
+ListNode* Solution::swapPairs(ListNode* head) {
+    ListNode *ans=head;
+    helper(head);
+    return ans;
+}
