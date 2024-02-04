@@ -1,0 +1,75 @@
+
+//Given -> n m   ,(n is number of nodes, m are number of edges)
+// then m lines representing edges
+
+
+
+//method 1 - adjacency matrix 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    // adjacency matrix for undirected graph
+    // time complexity: O(n)
+    int adj[n+1][n+1];
+    for(int i = 0; i < m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        adj[u][v] = 1;
+        adj[v][u] = 1 ; // this statement will be removed in case of directed graph
+    }
+}
+
+//S.C. - > O(N*N)
+
+
+/*
+To store weighted graph
+  adj[u][v] = wt;
+  adj[v][u] = wt ;
+*/
+
+
+//method 2 - adjacency list
+//S.C. ->O(2*E)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    // adjacency matrix for undirected graph
+    // time complexity: O(n)
+    vector<int> adj[n+1];   //array of vectors 
+    for(int i = 0; i < m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u); // this statement will be removed in case of directed graph
+    }
+}
+
+
+/*
+// To store weighted graph
+ int main()
+{
+    int n, m;
+    cin >> n >> m;
+    // adjacency matrix for undirected graph
+    // time complexity: O(n)
+    vector<pair<int,int>> adj[n+1];   //array of vectors 
+    for(int i = 0; i < m; i++)
+    {
+        int u, v,wt;
+        cin >> u >> v>>wt;
+        adj[u].push_back({v,wt});
+        adj[v].push_back({u,wt}); // this statement will be removed in case of directed graph
+    }
+}
+
+*/
