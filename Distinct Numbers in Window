@@ -1,0 +1,58 @@
+// vector<int> Solution::dNums(vector<int> &A, int B) {
+//     vector<int> ans;
+//     for(int i=0;i<=A.size()-B;i++){
+//         unordered_map<int,int> mpp;
+//         int cnt=B;
+//         for(int j=i;j<i+B;j++){
+//             mpp[A[j]]++;
+//         }
+//         for(auto it:mpp){
+//             if(it.second>1)cnt-=it.second-1;
+//         }
+//         ans.push_back(cnt);
+//     }
+//     return ans;
+// }
+
+
+
+//sliding window
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+vector<int> Solution::dNums(vector<int> &A, int B) {
+    vector<int> ans;
+    unordered_map<int, int> mpp;
+    
+    // Initialize the count for the first window
+    int cnt = 0;
+    for (int i = 0; i < B; i++) {
+        if (mpp[A[i]] == 0) {
+            cnt++;
+        }
+        mpp[A[i]]++;
+    }
+    ans.push_back(cnt);
+
+    // Slide the window and update counts
+    for (int i = B; i < A.size(); i++) {
+        // Remove the element that is no longer in the window
+        if (mpp[A[i - B]] == 1) {
+            cnt--;
+        }
+        mpp[A[i - B]]--;
+
+        // Add the new element to the window
+        if (mpp[A[i]] == 0) {
+            cnt++;
+        }
+        mpp[A[i]]++;
+
+        ans.push_back(cnt);
+    }
+
+    return ans;
+}
+
