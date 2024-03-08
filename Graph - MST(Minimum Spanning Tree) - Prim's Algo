@@ -1,4 +1,10 @@
-//prim's algo
+/*
+   Prim's Algorithm
+   Time complexity - O(ElogE)
+   Space complexity- O(E)
+*/
+
+
 class Solution
 {
 	public:
