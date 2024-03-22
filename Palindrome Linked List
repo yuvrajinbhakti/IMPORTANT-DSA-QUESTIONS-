@@ -1,0 +1,73 @@
+/*
+Given the head of a singly linked list, return true if it is a 
+palindrome
+ or false otherwise.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,2,1]
+Output: true
+Example 2:
+
+
+Input: head = [1,2]
+Output: false
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [1, 105].
+0 <= Node.val <= 9
+ 
+
+Follow up: Could you do it in O(n) time and O(1) space?
+
+*/
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+    ListNode* Reverse(ListNode * node){
+ListNode *curr=node,*prev=NULL,*currNext;
+while(curr!=NULL){
+currNext=curr->next;
+curr->next=prev;
+prev=curr;
+curr=currNext;
+}
+return prev;
+    }
+public:
+    bool isPalindrome(ListNode* head) {
+       //finding mid of linked list
+       ListNode* slow=head,*fast=head;
+       while(fast!=NULL && fast->next!=NULL){
+slow=slow->next;
+fast=fast->next->next;
+       }
+       //now slow points to mid of linked list
+       ListNode* mid=Reverse(slow);       //reverse linked list from mid
+
+
+       //now check from mid and start , if not equal values then false .if all equal then true
+       ListNode *start=head;
+while(mid!=NULL && start!=NULL){
+if(start->val != mid->val)return false;
+start=start->next;
+mid=mid->next;
+}
+return true;
+       }
+};
