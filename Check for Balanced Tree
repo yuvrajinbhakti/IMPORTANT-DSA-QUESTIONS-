@@ -84,3 +84,24 @@ public:
 Complexity:
 Time Complexity:  O(n), where n is the number of nodes in the binary tree. This is because the code traverses each node in the tree exactly once.
 Space Complexity: O(h), where h is the height of the binary tree. It is determined by the memory used by the call stack during the recursive traversal. In the worst case, the depth of the recursion (call stack depth) could be equal to the height of the binary tree.
+
+
+
+
+
+//optmised and easy to understand
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if(helper(root)==-1)return false;
+        return true;
+    }
+    int helper(TreeNode* root){
+        if(root==NULL) return 0;
+        int left=helper(root->left);
+        int right=helper(root->right);
+        if(left==-1 || right==-1)return -1;
+        if(abs(left-right)>1)return -1;
+        return max(left,right)+1;
+    }
+};
