@@ -1,0 +1,19 @@
+
+/*
+Path Sum of Binary Search Tree
+
+Problem Statement : Given a pre-constructed BST and a target sum, determine if there exists a path from the root to any leaf whose values sum up to the target. You need to only implement the hasPathSum(node, int) method.
+
+*/
+
+bool PathSum(TreeNode* root, int target) {
+     //base case
+     if(root==NULL)return false;
+     if(root->left==NULL && root->right==NULL )return root->val==target;
+
+//ek baar krke dikhaao
+target-=root->val;
+bool left=PathSum(root->left,target);
+bool right=PathSum(root->right,target);
+     return left || right;   
+    }
